@@ -8,7 +8,7 @@
 [![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![GitHub Repo](https://img.shields.io/badge/GitHub-Repo-black?style=for-the-badge&logo=github)](https://github.com/ananyanair12/agentic-dating-site)
 
-[🎥 Watch Demo Video (3 Min Max)](#-youtube-demo-video) • [🚀 Live Website](#-live-website) • [📊 View Compatibility Matrix](#-features)
+[🎥 Watch Demo Video (3 Min Max)](#-youtube-demo-video) • [🚀 Live Website](#[-live-website](https://agentic-dating-site-seven.vercel.app/)) • [📊 View Compatibility Matrix](#-features)
 
 ---
 
