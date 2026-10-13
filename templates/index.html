@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111412">
+  <title>Agentic Dating Site</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: { ink: '#111412', panel: '#191e1b', line: '#303a33', lime: '#c2f970', muted: '#a5b0a7' }, fontFamily: { display: ['Georgia', 'serif'], sans: ['Arial', 'sans-serif'] } } }
+    }
+  </script>
+  <style>
+    :root { color-scheme: dark; }
+    html { scroll-behavior: smooth; }
+    body { background-color: #111412; background-image: radial-gradient(ellipse at 90% 0%, rgba(194,249,112,.09), transparent 35%), linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px); background-size: auto, 100% 28px; }
+    .profile-card { animation: rise-in .45s ease both; }
+    @keyframes rise-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; scroll-behavior: auto !important; } }
+  </style>
+</head>
+<body class="min-h-screen font-sans text-white antialiased">
+  <header class="border-b border-line/80 bg-ink/80">
+    <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-5 sm:px-8">
+      <a href="#top" class="flex items-center gap-3" aria-label="Agentic Dating Site home">
+        <span class="grid h-10 w-10 place-items-center rounded-xl bg-lime text-xl text-ink">&#9829;</span>
+        <span><span class="block font-display text-xl sm:text-2xl">Agentic Dating Site</span><span class="text-xs uppercase tracking-[.18em] text-muted">A compatibility experiment</span></span>
+      </a>
+      <a href="#rankings" class="hidden rounded-full border border-line px-4 py-2 text-sm text-muted transition hover:border-lime hover:text-lime sm:inline-flex">Explore rankings <span class="ml-2" aria-hidden="true">&#8595;</span></a>
+    </div>
+  </header>
+
+  <main id="top" class="mx-auto max-w-7xl px-5 pb-20 sm:px-8">
+    <section class="py-12 sm:py-16">
+      <div class="grid gap-8 md:grid-cols-[1.15fr_.85fr] md:items-end">
+        <div>
+          <p class="mb-4 text-xs font-bold uppercase tracking-[.22em] text-lime">People, preferences, possibility</p>
+          <h1 class="max-w-3xl font-display text-4xl leading-tight sm:text-6xl">Let the agents make the <span class="italic text-lime">first move.</span></h1>
+        </div>
+        <p class="max-w-xl border-l border-lime/50 pl-5 text-sm leading-7 text-muted sm:text-base">A playful compatibility sandbox where AI stand-ins compare what matters, find common ground, and suggest who might click.</p>
+      </div>
+      <div class="mt-8 flex flex-wrap items-center gap-x-5 gap-y-2 border-y border-line py-3 text-xs text-muted">
+        <span class="inline-flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-lime"></span>25 public figures</span>
+        <span>Deterministic sample simulation</span>
+        <span class="text-lime/90">Agent analysis is generated from supplied profile text; dating preferences are not verified statements by these people.</span>
+      </div>
+    </section>
+
+    <section aria-labelledby="profiles-heading" class="scroll-mt-6">
+      <div class="mb-5 flex flex-wrap items-end justify-between gap-3">
+        <div><p class="mb-1 text-xs uppercase tracking-[.2em] text-lime">01 / The roster</p><h2 id="profiles-heading" class="font-display text-3xl">Meet the profiles</h2></div>
+        <p class="max-w-xl text-sm leading-6 text-muted">Interests and traits are inferred from the supplied bios and hobbies. Social links are supplied URLs; this demo does not fetch account content or confirm account ownership.</p>
+      </div>
+      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {% for person in profiles %}
+        <article id="profile-{{ person.id }}" class="profile-card flex min-h-[300px] flex-col border border-line bg-panel/90 p-5 transition duration-200 hover:-translate-y-1 hover:border-lime/60" style="animation-delay: {{ (loop.index0 % 8) * 45 }}ms">
+          <div class="flex items-start justify-between gap-3">
+            <div><h3 class="font-display text-xl">{{ person.name }}</h3><p class="mt-1 text-xs text-muted">{{ person.title }}</p></div>
+            <span class="rounded-full border border-line px-2.5 py-1 text-[10px] uppercase tracking-wider text-muted">{{ "%02d"|format(person.id) }}</span>
+          </div>
+          <p class="mt-4 text-sm leading-6 text-muted">{{ person.bio }}</p>
+          <div class="mt-4"><p class="mb-2 text-[10px] font-bold uppercase tracking-[.18em] text-white/60">AGENT ANALYSIS &amp; NEEDS</p><p class="text-xs leading-5 text-white/80">{{ person.needs }}</p></div>
+          <div class="mt-4"><p class="mb-2 text-[10px] font-bold uppercase tracking-[.18em] text-white/60">Interests</p><div class="flex flex-wrap gap-1.5">{% for interest in person.interests %}<span class="rounded-sm bg-lime/10 px-2 py-1 text-xs text-lime">{{ interest }}</span>{% endfor %}</div></div>
+          <div class="mt-3"><p class="mb-2 text-[10px] font-bold uppercase tracking-[.18em] text-white/60">Agent-inferred traits</p><div class="flex flex-wrap gap-1.5">{% for trait in person.traits %}<span class="rounded-sm bg-white/[.06] px-2 py-1 text-xs text-white/80">{{ trait }}</span>{% endfor %}</div></div>
+          <div class="mt-3"><p class="mb-2 text-[10px] font-bold uppercase tracking-[.18em] text-white/60">Hobbies</p><p class="text-xs leading-5 text-muted">{{ person.hobbies|join(' · ') }}</p></div>
+          <div class="mt-auto flex flex-wrap gap-4 pt-5 text-xs font-semibold">
+            <a href="{{ person.linkedin }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-lime hover:text-white">LinkedIn <span aria-hidden="true">&#8599;</span></a>
+            {% if person.instagram %}<a href="{{ person.instagram }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-lime hover:text-white">Instagram <span aria-hidden="true">&#8599;</span></a>{% else %}<span class="text-xs text-muted">Instagram link unavailable</span>{% endif %}
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section aria-labelledby="simulation-heading" class="mt-16 scroll-mt-6">
+      <div class="mb-5"><p class="mb-1 text-xs uppercase tracking-[.2em] text-lime">02 / The first date</p><h2 id="simulation-heading" class="font-display text-3xl">Live Agent Dating Simulation</h2></div>
+      <div class="grid overflow-hidden border border-line bg-panel lg:grid-cols-[.78fr_1.22fr]">
+        <div class="border-b border-line p-5 sm:p-7 lg:border-b-0 lg:border-r">
+          <p class="text-sm leading-6 text-muted">Choose two people and let their agents test the conversational chemistry.</p>
+          <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+            <label class="text-xs font-semibold uppercase tracking-wider text-muted" for="person-one">First profile
+              <select id="person-one" class="mt-2 block w-full rounded-sm border border-line bg-ink px-3 py-3 text-sm normal-case tracking-normal text-white outline-none focus:border-lime"></select>
+            </label>
+            <label class="text-xs font-semibold uppercase tracking-wider text-muted" for="person-two">Second profile
+              <select id="person-two" class="mt-2 block w-full rounded-sm border border-line bg-ink px-3 py-3 text-sm normal-case tracking-normal text-white outline-none focus:border-lime"></select>
+            </label>
+          </div>
+          <button id="simulate-button" type="button" class="mt-5 flex w-full items-center justify-center gap-2 bg-lime px-4 py-3 text-sm font-bold text-ink transition hover:bg-white disabled:cursor-wait disabled:opacity-60"><span aria-hidden="true">&#10022;</span> Simulate Date Between Agents</button>
+          <p id="simulation-error" class="mt-3 hidden text-sm text-rose-300" role="alert"></p>
+        </div>
+        <div class="flex min-h-[320px] flex-col p-5 sm:p-7">
+          <div class="flex items-center justify-between gap-4 border-b border-line pb-4"><div><p class="text-xs uppercase tracking-[.18em] text-muted">Conversation log</p><p id="conversation-title" class="mt-1 font-display text-xl">Waiting for introductions</p></div><div id="score-wrap" class="hidden shrink-0 text-right"><p class="text-[10px] uppercase tracking-widest text-muted">Compatibility</p><p class="font-display text-2xl text-lime"><span id="score">--</span><span class="text-base">%</span></p></div></div>
+          <div id="conversation" class="flex flex-1 flex-col gap-3 py-5" aria-live="polite"><p id="empty-state" class="m-auto max-w-sm text-center text-sm leading-6 text-muted">Your agents are ready when you are. Pick a pair to see what they discover.</p></div>
+          <div id="typing-state" class="hidden items-center gap-2 text-xs text-muted"><span class="flex gap-1"><i class="h-1.5 w-1.5 animate-pulse rounded-full bg-lime"></i><i class="h-1.5 w-1.5 animate-pulse rounded-full bg-lime [animation-delay:150ms]"></i><i class="h-1.5 w-1.5 animate-pulse rounded-full bg-lime [animation-delay:300ms]"></i></span> Agents are comparing notes</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="rankings" aria-labelledby="rankings-heading" class="mt-16 scroll-mt-6">
+      <div class="mb-5 flex flex-wrap items-end justify-between gap-4"><div><p class="mb-1 text-xs uppercase tracking-[.2em] text-lime">03 / The shortlist</p><h2 id="rankings-heading" class="font-display text-3xl">Compatibility Rankings</h2></div><p class="max-w-md text-sm leading-6 text-muted">Top three suggested matches per profile, scored from shared themes in profile bios and listed hobbies.</p></div>
+      <div class="overflow-x-auto border border-line bg-panel">
+        <table class="w-full min-w-[680px] border-collapse text-left text-sm"><thead><tr class="border-b border-line bg-white/[.03] text-[10px] uppercase tracking-[.17em] text-muted"><th class="px-5 py-4 font-semibold">Person</th><th class="px-5 py-4 font-semibold">Top match</th><th class="px-5 py-4 font-semibold">Second</th><th class="px-5 py-4 font-semibold">Third</th></tr></thead><tbody id="rankings-body"><tr><td colspan="4" class="px-5 py-8 text-center text-muted">Loading compatibility rankings...</td></tr></tbody></table>
+      </div>
+      <p class="mt-3 text-xs text-muted">Scores are deterministic comparisons of supplied profile summaries, not predictions of real relationship compatibility.</p>
+    </section>
+  </main>
+
+  <footer class="border-t border-line"><div class="mx-auto flex max-w-7xl flex-wrap justify-between gap-2 px-5 py-6 text-xs text-muted sm:px-8"><span>Agentic Dating Site <span class="text-lime">/</span> Demo build</span><span>Generated analysis; supplied profile links are not independently authenticated.</span></div></footer>
+
+  <script>
+    const people = {{ profiles|tojson }};
+    const firstSelect = document.getElementById('person-one');
+    const secondSelect = document.getElementById('person-two');
+    const button = document.getElementById('simulate-button');
+    const conversation = document.getElementById('conversation');
+    const sleep = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
+
+    people.forEach((person, index) => {
+      const option = new Option(`${person.name} - ${person.title}`, person.id);
+      const otherOption = option.cloneNode(true);
+      firstSelect.add(option);
+      secondSelect.add(otherOption);
+      if (index === 0) firstSelect.value = person.id;
+      if (index === 1) secondSelect.value = person.id;
+    });
+
+    function renderMessage(message, index) {
+      const wrapper = document.createElement('div');
+      wrapper.className = `max-w-[90%] border px-4 py-3 ${index % 2 === 0 ? 'self-start border-line bg-ink' : 'self-end border-lime/20 bg-lime/[.07]'}`;
+      const speaker = document.createElement('p');
+      speaker.className = 'mb-1 text-[10px] font-bold uppercase tracking-widest text-lime';
+      speaker.textContent = message.speaker;
+      const text = document.createElement('p');
+      text.className = 'text-sm leading-6 text-white/90';
+      text.textContent = message.message;
+      wrapper.append(speaker, text);
+      return wrapper;
+    }
+
+    button.addEventListener('click', async () => {
+      const id1 = firstSelect.value;
+      const id2 = secondSelect.value;
+      const error = document.getElementById('simulation-error');
+      if (id1 === id2) {
+        error.textContent = 'Choose two different profiles to start a date.';
+        error.classList.remove('hidden');
+        return;
+      }
+      error.classList.add('hidden');
+      button.disabled = true;
+      conversation.replaceChildren();
+      document.getElementById('score-wrap').classList.add('hidden');
+      document.getElementById('conversation-title').textContent = 'Agents are meeting';
+      document.getElementById('typing-state').classList.remove('hidden');
+      document.getElementById('typing-state').classList.add('flex');
+      try {
+        const response = await fetch(`/api/simulate-date/${encodeURIComponent(id1)}/${encodeURIComponent(id2)}`);
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.detail || 'The simulation could not be started.');
+        document.getElementById('conversation-title').textContent = `${result.person1} + ${result.person2}`;
+        for (const [index, message] of result.messages.entries()) {
+          document.getElementById('typing-state').classList.remove('hidden');
+          document.getElementById('typing-state').classList.add('flex');
+          await sleep(480);
+          document.getElementById('typing-state').classList.add('hidden');
+          document.getElementById('typing-state').classList.remove('flex');
+          conversation.append(renderMessage(message, index));
+        }
+        document.getElementById('score').textContent = result.compatibility;
+        document.getElementById('score-wrap').classList.remove('hidden');
+      } catch (exception) {
+        error.textContent = exception.message;
+        error.classList.remove('hidden');
+      } finally {
+        document.getElementById('typing-state').classList.add('hidden');
+        document.getElementById('typing-state').classList.remove('flex');
+        button.disabled = false;
+      }
+    });
+
+    async function loadRankings() {
+      const body = document.getElementById('rankings-body');
+      try {
+        const response = await fetch('/api/rankings');
+        if (!response.ok) throw new Error('Could not load rankings.');
+        const data = await response.json();
+        body.replaceChildren();
+        data.rankings.forEach((row, rowIndex) => {
+          const tr = document.createElement('tr');
+          tr.className = 'border-b border-line/70 last:border-0 hover:bg-white/[.025]';
+          const name = document.createElement('td');
+          name.className = 'px-5 py-4 font-medium';
+          const link = document.createElement('a');
+          link.href = `#profile-${row.person.id}`;
+          link.className = 'hover:text-lime';
+          link.textContent = `${String(row.person.id).padStart(2, '0')} / ${row.person.name}`;
+          name.append(link);
+          tr.append(name);
+          row.matches.forEach((match, index) => {
+            const td = document.createElement('td');
+            td.className = 'px-5 py-4';
+            const candidate = document.createElement('a');
+            candidate.href = `#profile-${match.id}`;
+            candidate.className = 'mr-2 hover:text-lime';
+            candidate.textContent = match.name;
+            const score = document.createElement('span');
+            score.className = `whitespace-nowrap text-xs ${index === 0 ? 'text-lime' : 'text-muted'}`;
+            score.textContent = `${match.compatibility}%`;
+            td.append(candidate, score);
+            tr.append(td);
+          });
+          tr.style.animation = `rise-in .25s ease ${Math.min(rowIndex * 18, 300)}ms both`;
+          body.append(tr);
+        });
+      } catch (exception) {
+        body.replaceChildren();
+        const row = document.createElement('tr');
+        const cell = document.createElement('td');
+        cell.colSpan = 4;
+        cell.className = 'px-5 py-8 text-center text-rose-300';
+        cell.textContent = exception.message;
+        row.append(cell);
+        body.append(row);
+      }
+    }
+
+    loadRankings();
+  </script>
+</body>
+</html>
